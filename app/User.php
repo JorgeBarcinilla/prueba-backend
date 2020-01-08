@@ -47,4 +47,28 @@ class User extends Authenticatable
         return $this->belongsTo('App\City');
     }
 
+
+    //Metodos añadidos a eloquent para el filtrado de datos
+
+    public function scopeIdentification($query, $identification){
+        if($identification)
+            return $query->where('identification', 'LIKE', "%$identification%");
+    }
+    public function scopeName($query, $name){
+        if($name)
+            return $query->where('name', 'LIKE', "%$name%");
+    }
+    public function scopeDateBirth($query, $date_birth){
+        if($date_birth)
+            return $query->where('date_birth', 'LIKE', "%$date_birth%");
+    }
+    public function scopeCountry($query, $country_id){
+        if($country_id)
+            return $query->where('country_id', 'LIKE', "%$country_id%");
+    }
+    public function scopeCity($query, $city_id){
+        if($city_id)
+            return $query->where('city_id', 'LIKE', "%$city_id%");
+    }
+    
 }

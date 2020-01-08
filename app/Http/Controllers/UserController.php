@@ -12,15 +12,21 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+        $users = User::orderBy('name','ASC')
+                    ->identification($request->identification)
+                    ->name($request->name)
+                    ->dateBirth($request->date_birth)
+                    ->country($request->country_id)
+                    ->city($request->city_id)
+                    ->get();
         return response()->json($users->load('country','city'),200)
         ->withHeaders([
-            'Access-Control-Allow-Origin' => '*',
-            'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept',
-            'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE',
-            'content-type'=>'application/json; charset=utf-8'
+        'Access-Control-Allow-Origin' => '*',
+        'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept',
+        'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE',
+        'content-type'=>'application/json; charset=utf-8'
         ]);
     }
 
@@ -50,11 +56,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        
     }
-
+    
     /**
      * Update the specified resource in storage.
      *

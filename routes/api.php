@@ -14,5 +14,5 @@ use Illuminate\Http\Request;
 */
 
 //Esta es una ruta de tipo resource que asigna automaticamente las rutas tipicas CRUD
-Route::resource('user', 'UserController');
+Route::apiResource('user', 'UserController');
 
