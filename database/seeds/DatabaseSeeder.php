@@ -53,14 +53,14 @@ class DatabaseSeeder extends Seeder
         //Se usa faker para generar datos de personas con fines de prueba
         $faker = Faker::create();
         for ($i=0; $i < 10; $i++) {
-
+            $id_country = $faker->numberBetween(1,10);
             DB::table('users')->insert([
                 'name' => $faker->firstName,
                 'surnames' => $faker->lastName.' '.$faker->lastName,
                 'identification' => $faker->unique()->numberBetween(1000000,9999999999),
                 'date_birth' => $faker->date,
-                'country_id' => $faker->numberBetween(1,10),
-                'city_id' => $faker->numberBetween(1,4)
+                'country_id' => $id_country,
+                'city_id' => ($faker->numberBetween(1,4)+$id_country)
             ]);
         }
         

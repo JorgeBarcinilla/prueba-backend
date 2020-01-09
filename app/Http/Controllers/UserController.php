@@ -7,28 +7,48 @@ use App\User;
 
 class UserController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('cors');
+    }
+
+    /**
+     * Display a listing of the resource filtered.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
+        $users = User::all();
+        return response()->json($users->load('country','city'));
+
+    }
+
+    /**
+     * Display a listing of the resource filtered.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function filterResource(Request $request)
+    {
         $users = User::orderBy('name','ASC')
                     ->identification($request->identification)
                     ->name($request->name)
                     ->dateBirth($request->date_birth)
-                    ->country($request->country_id)
-                    ->city($request->city_id)
+                    ->country($request->country)
+                    ->city($request->city)
                     ->get();
-        return response()->json($users->load('country','city'),200)
-        ->withHeaders([
-        'Access-Control-Allow-Origin' => '*',
-        'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept',
-        'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE',
-        'content-type'=>'application/json; charset=utf-8'
-        ]);
+
+        return response()->json($users->load('country','city'));
+
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -38,16 +58,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
         $user = new User();
-        $user->name =$request->name;
-        $user->surnames =$request->surnames;
-        $user->identification =$request->identification;
-        $user->date_birth =$request->date_birth;
-        $user->country_id =$request->country;
-        $user->city_id =$request->city;
+        $user->name =$request->input('name');
+        $user->surnames =$request->input('surnames');
+        $user->identification =$request->input('identification');
+        $user->date_birth =$request->input('date_birth');
+        $user->country_id =$request->input('country');
+        $user->city_id =$request->input('city');
         $user->save();
-        return response()->json(['message'=>'Usuario creado exitosamente'],201);
+        return response()->json($request);
     }
 
     /**
@@ -70,12 +89,12 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $user->name =$request->name;
-        $user->surnames =$request->surnames;
-        $user->identification =$request->identification;
-        $user->date_birth =$request->date_birth;
-        $user->country_id =$request->country;
-        $user->city_id =$request->city;
+        $user->name = $request->name;
+        $user->surnames = $request->surnames;
+        $user->identification = $request->identification;
+        $user->date_birth = $request->date_birth;
+        $user->country_id = $request->country;
+        $user->city_id = $request->city;
         $user->save();
 
         return response()->json(['message'=>'Usuario modificado']);

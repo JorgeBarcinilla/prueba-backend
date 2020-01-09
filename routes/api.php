@@ -14,5 +14,9 @@ use Illuminate\Http\Request;
 */
 
 //Esta es una ruta de tipo resource que asigna automaticamente las rutas tipicas CRUD
+Route::post('user/filter', 'UserController@filterResource');
 Route::apiResource('user', 'UserController');
+Route::apiResource('country', 'CountryController')->only([
+    'index'
+]);
 

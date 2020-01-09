@@ -64,11 +64,11 @@ class User extends Authenticatable
     }
     public function scopeCountry($query, $country_id){
         if($country_id)
-            return $query->where('country_id', 'LIKE', "%$country_id%");
+            return $query->where('country_id', $country_id);
     }
     public function scopeCity($query, $city_id){
         if($city_id)
-            return $query->where('city_id', 'LIKE', "%$city_id%");
+            return $query->where('city_id',$city_id);
     }
     
 }
